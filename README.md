@@ -1,4 +1,4 @@
-# Containerized data science / -engineering playground (w/ Kafka, Airflow, MLFlow, Tensorflow-Keras / SKLearn) for simulating a microservices-oriented architecture
+# Containerized data science / -engineering playground (w/ Kafka, Airflow, MLFlow, Tensorflow-Keras and SKLearn) for simulating a microservices-oriented architecture
 
 Key containers:
 
