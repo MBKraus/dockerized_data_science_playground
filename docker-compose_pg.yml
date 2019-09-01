@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+
+    postgres:
+        image: postgres:9.6
+        container_name: postgres_container
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+
+    airflow:
+        build: './airflow_docker'
+        container_name: airflow_container
+        restart: always
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - EXECUTOR=Local
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+        ports:
+            - "8080:8080"
+        command: webserver
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
+    zookeeper:
+        image: wurstmeister/zookeeper
+        container_name: zookeeper_container
+        ports:
+            - "2181:2181"
+
+    kafka:
+        image: wurstmeister/kafka
+        container_name: kafka_container
+        ports:
+            - "9092:9092"
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: kafka
+            KAFKA_CREATE_TOPICS: "TopicA:1:1"
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_LISTENERS: PLAINTEXT://:9092
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+    mlflow:
+        build: './mlflow_docker'
+        container_name: mlflow_container
+        ports:
+            - "5000:5000"
+        command: 'mlflow server --backend-store-uri ./mlflow --default-artifact-root ./mlflow --host 0.0.0.0 --port 5000'
+
