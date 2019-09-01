@@ -2,7 +2,7 @@
 
 Key containers:
 
-* Airflow container (port 8080) for scheduling / automating tasks. In terms of data science toolkit, this container has Tensorflow, Keras, and SKLearn installed.
+* Airflow container (port 8080) for scheduling / automating tasks. This container has your go-to data science tools installed (i.e. Tensorflow, Keras, and SKLearn).
 * Kafka container (port 9032) for facilitating streaming data. The current setup is structured along one topic ('TopicA') with one partition. Along the airflow container one could automate data retrieval from the Kafka topic by having the container communicate with the 'kafka:9092' address
 * MLFlow container (port 5000) for logging parameters and metrics of trained models (through 'mlflow:5000')
 
