@@ -19,7 +19,7 @@ services:
             - LOAD_EX=n
             - EXECUTOR=Local
         volumes:
-            - ./dags:/usr/local/airflow/dags
+            - ./dags:/usr/local/airflow/dags .    #Note: a local folder containing Airflow dags is mounted to the container
         ports:
             - "8080:8080"
         command: webserver
